@@ -1,7 +1,7 @@
 package encryptdecrypt;
 
-public class EncryptDecryptionService {
-    public static String encryptText(String text, int key) {
+public abstract class EncryptDecryptionAlgorithm {
+    public String encryptText(String text, int key) {
 
         String[] textArr = text.split("");
         String[] encryptedArr = new String[textArr.length];
@@ -13,12 +13,10 @@ public class EncryptDecryptionService {
         return String.join("", encryptedArr);
     }
 
-    private static char getNewLetter(String letter, int key) {
-        char character = letter.toCharArray()[0];
-        return (char) ((int) character + key);
-    }
 
-    public static String decryptText(String text, int key) {
+    abstract char getNewLetter(String letter, int key);
+
+    public String decryptText(String text, int key) {
 
         return encryptText(text, -key);
     }

@@ -14,12 +14,17 @@ public class ConsoleOptionsService {
         String mode = "";
         int key = 0;
         String text = "";
+        String alg = "shift";
         String filePathOutput = "";
         String filePathInput = "";
+        EncryptDecryptionAlgorithm encDecAlgorithm = new ShiftAlgorithm();
         for (int i = 0; i < args.length; i++) {
             if (args[i].contains("-mode")) {
                 i++;
                 mode = args[i];
+            } else if (args[i].contains("-alg")) {
+                i++;
+                alg = args[i];
             } else if (args[i].contains("-key")) {
                 i++;
                 key = Integer.parseInt(args[i]);
@@ -37,7 +42,9 @@ public class ConsoleOptionsService {
                 filePathOutput = args[i];
             }
         }
-
+if (alg.equalsIgnoreCase("unicode")){
+    encDecAlgorithm = new UnicodeAlgorithm();
+}
         if (isFileInput) {
             Scanner scanner;
             try {
@@ -52,10 +59,11 @@ public class ConsoleOptionsService {
             System.out.println("Error");
             return;
         }
+
         String result = "";
         switch (mode) {
-            case "enc" -> result = EncryptDecryptionService.encryptText(text, key);
-            case "dec" -> result = EncryptDecryptionService.decryptText(text, key);
+            case "enc" -> result = encDecAlgorithm.encryptText(text, key);
+            case "dec" -> result = encDecAlgorithm.decryptText(text, key);
             default -> System.out.println("Error");
         }
         if (isConsoleOutput) {
